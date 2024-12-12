@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +9,32 @@
 </head>
 <body>
   <h1>Bataille Navale</h1>
-<div class="contener">
-  <div id="grid"></div>
+
+  <!-- grid -->
+  <div id="grid-container">
+    <div id="grid-labels">
+      <div class="row-labels">
+        <span></span>
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+      </div>
+      <div class="grid-wrapper">
+        <div class="col-labels">
+          <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
+        </div>
+        <div id="grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- results -->
   <div id="results">
     <h2>Résultats</h2>
     <p id="message"></p>
     <ul id="sunk-ships"></ul>
     <p id="victory-message" style="display:none;">Vous avez gagné !</p>
   </div>
+
+  <!-- scoreboard -->
   <h2>Tableau des scores</h2>
   <div id="scoreboard">
     <table>
@@ -29,6 +47,5 @@
       <tbody id="score-table"></tbody>
     </table>
   </div>
-</div>
 </body>
 </html>

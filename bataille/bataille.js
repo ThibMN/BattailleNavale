@@ -4,7 +4,6 @@ const sunkShipsList = document.getElementById('sunk-ships');
 const victoryMessage = document.getElementById('victory-message');
 const scoreTable = document.getElementById('score-table');
 
-// Générer une grille 10x10
 for (let row = 0; row < 10; row++) {
   for (let col = 0; col < 10; col++) {
     const cell = document.createElement('div');
@@ -16,7 +15,6 @@ for (let row = 0; row < 10; row++) {
   }
 }
 
-// Gérer le clic sur une case
 async function handleCellClick(cell) {
   const row = cell.dataset.row;
   const col = cell.dataset.col;
@@ -31,7 +29,7 @@ async function handleCellClick(cell) {
       message.textContent = `Touché ! ${result.ship ? result.ship.name : ''}`;
       if (result.ship && result.ship.sunk) {
         const li = document.createElement('li');
-        li.textContent = `Tout les ${result.ship.name} sont coulés !`;
+        li.textContent = `Tous les ${result.ship.name} sont coulés !`;
         sunkShipsList.appendChild(li);
       }
     } else {
@@ -49,7 +47,6 @@ async function handleCellClick(cell) {
   }
 }
 
-// Mettre à jour le tableau des scores
 async function updateScoreboard() {
   const response = await fetch('scoreboard.php');
   const scores = await response.json();
@@ -61,16 +58,3 @@ async function updateScoreboard() {
     scoreTable.appendChild(row);
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-  
