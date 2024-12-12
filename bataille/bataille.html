@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bataille Navale</title>
+  <link rel="stylesheet" href="bataille.css">
+  <script src="bataille.js" defer></script>
+</head>
+<body>
+  <h1>Bataille Navale</h1>
+  <div id="grid"></div>
+  <div id="results">
+    <h2>Résultats</h2>
+    <p id="message"></p>
+    <ul id="sunk-ships"></ul>
+    <p id="victory-message" style="display:none;">Vous avez gagné !</p>
+  </div>
+  <h2>Tableau des scores</h2>
+  <div id="scoreboard">
+    <table>
+      <thead>
+        <tr>
+          <th>Joueur</th>
+          <th>Victoires</th>
+        </tr>
+      </thead>
+      <tbody id="score-table"></tbody>
+    </table>
+  </div>
+</body>
+</html>
