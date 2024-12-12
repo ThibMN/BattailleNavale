@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';      
 $dbname = 'bataille_navale';
-$username = 'root';      
-$password = '';          
+$username = 'Player1';      
+$password = '1234';          
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
 

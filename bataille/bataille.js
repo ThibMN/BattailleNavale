@@ -1,8 +1,13 @@
 const grid = document.getElementById('grid');
 const message = document.getElementById('message');
+const currentPlayerDisplay = document.getElementById('current-player');
 const sunkShipsList = document.getElementById('sunk-ships');
 const victoryMessage = document.getElementById('victory-message');
 const scoreTable = document.getElementById('score-table');
+
+let currentPlayer = "Joueur1";
+let joueur1Score = 0;
+let joueur2Score = 0;
 
 for (let row = 0; row < 10; row++) {
   for (let col = 0; col < 10; col++) {
@@ -16,6 +21,8 @@ for (let row = 0; row < 10; row++) {
 }
 
 async function handleCellClick(cell) {
+  if (cell.classList.contains('clicked')) return;
+
   const row = cell.dataset.row;
   const col = cell.dataset.col;
 
@@ -32,14 +39,56 @@ async function handleCellClick(cell) {
         li.textContent = `Tous les ${result.ship.name} sont coulés !`;
         sunkShipsList.appendChild(li);
       }
+      if (currentPlayer === "Joueur1") {
+        joueur1Score += 1;
+      } else {
+        joueur2Score += 1;
+      }
+      if (result.victory) {
+        victoryMessage.style.display = 'block';
+        let winner;
+
+        if (joueur1Score > joueur2Score) {
+          winner = "Joueur1";
+        } else if (joueur2Score > joueur1Score) {
+          winner = "Joueur2";
+        } else {
+          winner = "ex aequo";
+        }
+
+        // Envoyer la victoire au serveur
+        if (winner !== "ex aequo") {
+          try {
+            const updateResponse = await fetch('scoreboard.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ winner }),
+            });
+            const updateResult = await updateResponse.json();
+
+            if (updateResponse.ok) {
+              message.textContent = `Victoire pour ${winner} !`;
+              console.log(updateResult.message || 'Score enregistré avec succès.');
+            } else {
+              console.error(updateResult.error || 'Erreur lors de l\'enregistrement.');
+            }
+          } catch (error) {
+            console.error("Erreur lors de l'envoi des données au serveur : ", error);
+          }
+        } else {
+          message.textContent = "Match nul !";
+        }
+
+        // Mettre à jour le scoreboard
+        updateScoreboard();
+      }
     } else {
       cell.classList.add('miss');
       message.textContent = "À l'eau !";
-    }
-
-    if (result.victory) {
-      victoryMessage.style.display = 'block';
-      updateScoreboard();
+      if (result.nextPlayer) {
+        currentPlayer = result.nextPlayer;
+        currentPlayerDisplay.textContent = `Au tour de : ${currentPlayer}`;
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la requête : ", error);
@@ -47,14 +96,24 @@ async function handleCellClick(cell) {
   }
 }
 
-async function updateScoreboard() {
-  const response = await fetch('scoreboard.php');
-  const scores = await response.json();
 
-  scoreTable.innerHTML = '';
-  scores.forEach(({ player, victories }) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${player}</td><td>${victories}</td>`;
-    scoreTable.appendChild(row);
-  });
+async function updateScoreboard() {
+  try {
+    const response = await fetch('scoreboard.php');
+    const scores = await response.json();
+
+    if (response.ok) {
+      scoreTable.innerHTML = '<tr><th>Joueur</th><th>Victoires</th></tr>'; // En-tête
+      scores.forEach(({ player, victories }) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${player}</td><td>${victories}</td>`;
+        scoreTable.appendChild(row);
+      });
+    } else {
+      console.error(scores.error || 'Erreur inconnue lors de la récupération du scoreboard');
+    }
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du scoreboard :", error);
+    message.textContent = "Impossible de charger le scoreboard.";
+  }
 }

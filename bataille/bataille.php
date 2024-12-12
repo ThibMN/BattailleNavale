@@ -14,6 +14,7 @@ require 'session_start.php';
 if (!isset($_SESSION['partie_id'])) {
     $nouvellePartieId = creerNouvellePartie($pdo);
     $_SESSION['partie_id'] = $nouvellePartieId;
+    $_SESSION['joueur_actif'] = 'Joueur1';
     echo json_encode(['message' => "Nouvelle partie créée avec l'ID : $nouvellePartieId"]);
 } else {
     $partie_id = $_SESSION['partie_id'];
@@ -22,6 +23,8 @@ if (!isset($_SESSION['partie_id'])) {
 $numberRow = isset($_GET['numberRow']) ? intval($_GET['numberRow']) : null;
 $numberCol = isset($_GET['numberCol']) ? intval($_GET['numberCol']) : null;
 $partie_id = 1;
+$joueur_actif = $_SESSION['joueur_actif'];
+
 if ($numberRow === null || $numberCol === null || $partie_id === null) {
     echo json_encode(['error' => 'Paramètres manquants']);
     exit;
@@ -73,7 +76,8 @@ if ($ship) {
         'victory' => $victory
     ]);
 } else {
-    echo json_encode(['hit' => false]);
+    $_SESSION['joueur_actif'] = $joueur_actif === 'Joueur1' ? 'Joueur2' : 'Joueur1';
+    echo json_encode(['hit' => false, 'nextPlayer' => $_SESSION['joueur_actif']]);
 }
 
 function insererPositionsBateauxDansPartie($pdo, $partie_id) {
