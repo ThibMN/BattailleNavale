@@ -22,7 +22,7 @@ async function handleCellClick(cell) {
   const col = cell.dataset.col;
 
   try {
-    const response = await fetch(`bataille.php?row=${row}&col=${col}`);
+    const response = await fetch(`bataille.php?numberRow=${row}&numberCol=${col}`);
     const result = await response.json();
 
     cell.classList.add('clicked');
@@ -31,7 +31,7 @@ async function handleCellClick(cell) {
       message.textContent = `Touché ! ${result.ship ? result.ship.name : ''}`;
       if (result.ship && result.ship.sunk) {
         const li = document.createElement('li');
-        li.textContent = `${result.ship.name} coulé !`;
+        li.textContent = `Tout les ${result.ship.name} sont coulés !`;
         sunkShipsList.appendChild(li);
       }
     } else {
@@ -61,3 +61,16 @@ async function updateScoreboard() {
     scoreTable.appendChild(row);
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+  

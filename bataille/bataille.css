@@ -1,7 +1,36 @@
+:root {
+  --background-color: #f4f4f9;
+  --primary-color: #4a90e2;
+  --secondary-color: #f76c6c;
+  --text-color: #333;
+  --cell-border: #ccc;
+  --cell-hit: #ff4d4d;
+  --cell-miss: #4da6ff;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
+
+/* .contener {
+  display: flex;
+  flex-direction: row;
+} */
+
+h1 {
+  color: var(--primary-color);
+  margin: 20px 0;
+}
+
+h2 {
+  color: var(--secondary-color);
+}
+
 
 #grid {
   display: grid;
@@ -9,14 +38,25 @@ body {
   gap: 5px;
   margin: 20px auto;
   width: fit-content;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cell {
   width: 50px;
   height: 50px;
   background-color: lightgray;
-  border: 1px solid #ccc;
+  border: 2px solid var(--cell-border);
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cell:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.1);
 }
 
 .cell.clicked {
@@ -24,14 +64,78 @@ body {
 }
 
 .cell.hit {
-  background-color: red;
+  background-color: var(--cell-hit);
 }
 
 .cell.miss {
-  background-color: blue;
+  background-color: var(--cell-miss);
 }
 
-#results, #scoreboard {
+#results {
   margin: 20px auto;
   width: fit-content;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#results p, #results ul {
+  margin: 10px 0;
+  text-align: left;
+}
+
+#victory-message {
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+#scoreboard {
+  margin: 20px auto;
+  width: fit-content;
+}
+
+#scoreboard table {
+  border-collapse: collapse;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+#scoreboard th, #scoreboard td {
+  border: 1px solid var(--cell-border);
+  padding: 10px 20px;
+  text-align: center;
+}
+
+#scoreboard th {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+#scoreboard td {
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 600px) {
+  #grid {
+    grid-template-columns: repeat(10, 30px);
+    gap: 3px;
+  }
+
+  .cell {
+    width: 30px;
+    height: 30px;
+  }
+
+  h1, h2 {
+    font-size: 1.5em;
+  }
+
+  #scoreboard table {
+    font-size: 0.9em;
+  }
 }

@@ -24,8 +24,8 @@ if (!isset($_SESSION['partie_id'])) {
 }
 
 // Récupérer les paramètres
-$numberRow = $_GET['numberRow'] ?? null;
-$numberCol = $_GET['numberCol'] ?? null;
+$numberRow = isset($_GET['numberRow']) ? intval($_GET['numberRow']) : null;
+$numberCol = isset($_GET['numberCol']) ? intval($_GET['numberCol']) : null;
 $partie_id = 1; // ID de la partie en cours (depuis la session)
 
 if ($numberRow === null || $numberCol === null || $partie_id === null) {
