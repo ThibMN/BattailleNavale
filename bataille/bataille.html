@@ -8,25 +8,6 @@
   <script src="bataille.js" defer></script>
 </head>
 <body>
-  <h1>Bataille Navale</h1>
-
-  <!-- grid -->
-  <div id="grid-container">
-    <div id="grid-labels">
-      <div class="row-labels">
-        <span></span>
-        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-      </div>
-      <div class="grid-wrapper">
-        <div class="col-labels">
-          <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
-        </div>
-        <div id="grid"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="current-player">Au tour de : Joueur1</div>
 
   <!-- results -->
   <div id="results">
@@ -36,14 +17,32 @@
     <p id="victory-message" style="display:none;">Vous avez gagné !</p>
   </div>
 
+  <!-- grid -->
+  <div id="grid-container">
+    <h1>Bataille Navale</h1>
+    <div id="grid-labels">
+      <div class="row-labels">
+        <span></span>
+        <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+      </div>
+      <div class="grid-wrapper">
+        <div class="col-labels">
+          <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
+        </div>
+        <div id="grid"></div>
+      </div>
+    </div>
+    <div id="current-player">Au tour de : Joueur 1</div>
+  </div>
+
   <!-- scoreboard -->
-  <h2>scoreboard</h2>
   <div id="scoreboard">
+    <h2>scoreboard</h2>
     <table>
       <thead>
         <tr>
-          <th>Player</th>
-          <th>victories</th>
+          <!-- <th>Player</th>
+          <th>victories</th> -->
         </tr>
       </thead>
       <tbody id="score-table"></tbody>

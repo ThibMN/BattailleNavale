@@ -15,6 +15,11 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  background-image: url(fond2.img);
+  background-repeat: repeat;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 h1 {
@@ -48,6 +53,16 @@ h2 {
   transition: background-color 0.3s, transform 0.2s;
 }
 
+#current-player {
+  color: #ff4d4d;
+  font-size: larger;
+  background: #ffffff9a;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .cell:hover {
   background-color: #ffffff;
   transform: scale(1.1);
@@ -66,9 +81,10 @@ h2 {
 }
 
 #results {
+  max-height: 250px;
   margin: 20px auto;
   width: fit-content;
-  background: #fff;
+  background: #ffffff9a;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -87,7 +103,12 @@ h2 {
 
 #scoreboard {
   margin: 20px auto;
+  padding: 15px;
+  margin: 20px auto;
   width: fit-content;
+  border-radius: 10px;
+  background: #ffffff9a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #scoreboard table {
@@ -184,4 +205,72 @@ h2 {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+@media (max-width: 1024px) {
+  #grid {
+    grid-template-columns: repeat(10, 40px);
+  }
+
+  .cell {
+    width: 40px;
+    height: 40px;
+  }
+
+  h1, h2 {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 768px) {
+  #grid {
+    grid-template-columns: repeat(10, 35px);
+  }
+
+  .cell {
+    width: 35px;
+    height: 35px;
+  }
+
+  h1, h2 {
+    font-size: 1.5em;
+  }
+
+  #scoreboard table {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    flex-direction: column;
+  }
+
+  #grid {
+    grid-template-columns: repeat(10, 30px);
+  }
+
+  .cell {
+    width: 30px;
+    height: 30px;
+  }
+
+  h1, h2 {
+    font-size: 1.2em;
+  }
+
+  #results, #scoreboard {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  #scoreboard table {
+    font-size: 0.8em;
+  }
 }

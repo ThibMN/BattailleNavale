@@ -14,7 +14,6 @@ require 'session_start.php';
 if (!isset($_SESSION['partie_id'])) {
     $nouvellePartieId = creerNouvellePartie($pdo);
     $_SESSION['partie_id'] = $nouvellePartieId;
-    $_SESSION['joueur_actif'] = 'Joueur1';
     echo json_encode(['message' => "Nouvelle partie créée avec l'ID : $nouvellePartieId"]);
 } else {
     $partie_id = $_SESSION['partie_id'];
@@ -22,8 +21,9 @@ if (!isset($_SESSION['partie_id'])) {
 
 $numberRow = isset($_GET['numberRow']) ? intval($_GET['numberRow']) : null;
 $numberCol = isset($_GET['numberCol']) ? intval($_GET['numberCol']) : null;
+$joueur_actif = isset($_GET['currentPlayer']) ? $_GET['currentPlayer'] : null;
+
 $partie_id = 1;
-$joueur_actif = $_SESSION['joueur_actif'];
 
 if ($numberRow === null || $numberCol === null || $partie_id === null) {
     echo json_encode(['error' => 'Paramètres manquants']);
@@ -55,10 +55,6 @@ if ($ship) {
     $victory = $remainingShips->fetchColumn() == 0;
 
     if ($victory) {
-        $pdo->prepare("UPDATE parties SET en_cours = 0 WHERE id = ?")->execute([$partie_id]);
-
-        $pdo->query("UPDATE scoreboard SET victories = victories + 1 WHERE player = 'Joueur1'");
-
         $queryCopy = $pdo->prepare("
             INSERT INTO positions_parties (partie_id, numberRow, numberCol, bateau_id)
             SELECT ?, numberRow, numberCol, bateau_id FROM positions_bateaux
@@ -73,11 +69,12 @@ if ($ship) {
             'size' => $ship['taille'],
             'sunk' => $sunk
         ],
-        'victory' => $victory
+        'victory' => $victory,
+        'nextPlayer' => $joueur_actif
     ]);
 } else {
-    $_SESSION['joueur_actif'] = $joueur_actif === 'Joueur1' ? 'Joueur2' : 'Joueur1';
-    echo json_encode(['hit' => false, 'nextPlayer' => $_SESSION['joueur_actif']]);
+    $joueur_actif = $joueur_actif === 'Joueur 1' ? 'Joueur 2' : 'Joueur 1';
+    echo json_encode(['hit' => false, 'nextPlayer' => $joueur_actif]);
 }
 
 function insererPositionsBateauxDansPartie($pdo, $partie_id) {

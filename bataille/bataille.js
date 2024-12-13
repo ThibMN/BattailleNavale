@@ -5,7 +5,7 @@ const sunkShipsList = document.getElementById('sunk-ships');
 const victoryMessage = document.getElementById('victory-message');
 const scoreTable = document.getElementById('score-table');
 
-let currentPlayer = "Joueur1";
+let currentPlayer = "Joueur 1";
 let joueur1Score = 0;
 let joueur2Score = 0;
 
@@ -27,8 +27,10 @@ async function handleCellClick(cell) {
   const col = cell.dataset.col;
 
   try {
-    const response = await fetch(`bataille.php?numberRow=${row}&numberCol=${col}`);
+    console.log(currentPlayer);
+    const response = await fetch(`bataille.php?numberRow=${row}&numberCol=${col}&currentPlayer=${currentPlayer}`);
     const result = await response.json();
+    console.log(result.nextPlayer);
 
     cell.classList.add('clicked');
     if (result.hit) {
@@ -39,7 +41,7 @@ async function handleCellClick(cell) {
         li.textContent = `Tous les ${result.ship.name} sont coulés !`;
         sunkShipsList.appendChild(li);
       }
-      if (currentPlayer === "Joueur1") {
+      if (currentPlayer === "Joueur 1") {
         joueur1Score += 1;
       } else {
         joueur2Score += 1;
@@ -47,41 +49,47 @@ async function handleCellClick(cell) {
       if (result.victory) {
         victoryMessage.style.display = 'block';
         let winner;
-
+    
         if (joueur1Score > joueur2Score) {
-          winner = "Joueur1";
+            winner = "Joueur 1";
         } else if (joueur2Score > joueur1Score) {
-          winner = "Joueur2";
+            winner = "Joueur 2";
         } else {
-          winner = "ex aequo";
+            winner = "ex aequo";
         }
-
-        // Envoyer la victoire au serveur
+    
+        // Envoyer uniquement le gagnant au serveur
         if (winner !== "ex aequo") {
-          try {
-            const updateResponse = await fetch('scoreboard.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ winner }),
-            });
-            const updateResult = await updateResponse.json();
-
-            if (updateResponse.ok) {
-              message.textContent = `Victoire pour ${winner} !`;
-              console.log(updateResult.message || 'Score enregistré avec succès.');
-            } else {
-              console.error(updateResult.error || 'Erreur lors de l\'enregistrement.');
+            try {
+                // Vérification pour éviter une double requête
+                if (!victoryMessage.classList.contains('processed')) {
+                    const updateResponse = await fetch('scoreboard.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ winner }),
+                    });
+                    victoryMessage.classList.add('processed'); // Marquer comme traité
+                    const updateResult = await updateResponse.json();
+    
+                    if (updateResponse.ok) {
+                        message.textContent = `Victoire pour ${winner} !`;
+                        console.log(updateResult.message || 'Score enregistré avec succès.');
+                    } else {
+                        console.error(updateResult.error || 'Erreur lors de l\'enregistrement.');
+                    }
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'envoi des données au serveur : ", error);
             }
-          } catch (error) {
-            console.error("Erreur lors de l'envoi des données au serveur : ", error);
-          }
         } else {
-          message.textContent = "Match nul !";
+            message.textContent = "Match nul !";
         }
-
+    
         // Mettre à jour le scoreboard
         updateScoreboard();
-      }
+    }
+    
+    
     } else {
       cell.classList.add('miss');
       message.textContent = "À l'eau !";
@@ -103,7 +111,7 @@ async function updateScoreboard() {
     const scores = await response.json();
 
     if (response.ok) {
-      scoreTable.innerHTML = '<tr><th>Joueur</th><th>Victoires</th></tr>'; // En-tête
+      scoreTable.innerHTML = '<tr><th>Joueur</th><th>Victoires</th></tr>';
       scores.forEach(({ player, victories }) => {
         const row = document.createElement('tr');
         row.innerHTML = `<td>${player}</td><td>${victories}</td>`;
