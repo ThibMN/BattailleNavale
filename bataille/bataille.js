@@ -10,6 +10,7 @@ class BattleshipGame {
     this.currentPlayer = "Joueur 1";
     this.joueur1Score = 0;
     this.joueur2Score = 0;
+    this.finish = false;
 
     this.initGrid();
   }
@@ -25,10 +26,13 @@ class BattleshipGame {
         this.grid.appendChild(cell);
       }
     }
+    
+    this.updateScoreboard();
   }
 
   async handleCellClick(cell) {
     if (cell.classList.contains('clicked')) return;
+    if (this.finish) return;
 
     const row = cell.dataset.row;
     const col = cell.dataset.col;
@@ -108,7 +112,7 @@ class BattleshipGame {
     } else {
       this.message.textContent = "Match nul !";
     }
-
+    this.finish = true;
     this.updateScoreboard();
   }
 
