@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $winner = $data['winner'];
 
-    if ($winner !== 'ex aequo') {
+    if ($winner !== 'égalité') {
         $checkQuery = $pdo->prepare("SELECT COUNT(*) FROM scoreboard WHERE player = ?");
         $checkQuery->execute([$winner]);
         $exists = $checkQuery->fetchColumn() > 0;
